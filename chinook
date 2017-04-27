@@ -40,3 +40,33 @@ where emp.title = 'Sales Support Agent';
 select "$" || inv.[total] as total_price, cus.firstname || " " || cus.lastname as customer_name, 
 	cus.country, emp.firstname || " " || emp.lastname as employee_name
 from Employee emp join Customer cus on emp.employeeid = cus.supportrepid join Invoice inv on cus.customerid = inv.customerid
+
+--How many Invoices were there in 2009 and 2011?
+--select substr(invoicedate, 0, 5) from invoice limit 100;
+--select invoicedate from Invoice where substr(invoicedate, 0, 5) in ('2009', '2011');
+select count(invoiceid) from Invoice where substr(invoicedate, 0, 5) in ('2009', '2011');
+
+--What are the respective total sales for each of those years?
+select "$" || substr(sum([total]), 0, 7) as total_sales from Invoice where substr(invoicedate, 0, 5) in ('2009', '2011');
+
+--Looking at the InvoiceLine table, provide a query that COUNTs the number of line items for Invoice ID 37.
+--select * from invoiceline where invoiceid = 37;
+select count(invoiceid) from InvoiceLine where invoiceid = 37;
+
+--Looking at the InvoiceLine table, provide a query that COUNTs the number of line items for each Invoice. 
+--HINT: GROUP BY
+--select * from invoiceline order by invoiceid limit 100;
+select count(invoicelineid) from InvoiceLine group by invoiceid;
+
+--Provide a query that includes the purchased track name with each invoice line item.
+select tra.name, inl.invoicelineid
+from track tra join invoiceline inl on tra.trackid = inl.trackid
+order by tra.name; 
+
+--Provide a query that includes the purchased track name AND artist name with each invoice line item.
+select art.name as artist_name, tra.name as track_name, inl.invoicelineid
+from track tra join invoiceline inl on tra.trackid = inl.trackid
+	join album alb on tra.albumid = alb.albumid
+	join artist art on alb.artistid = art.artistid
+order by art.name, tra.name; 
+
