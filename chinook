@@ -1,0 +1,42 @@
+--Provide a query showing Customers (just their full names, customer ID and country) 
+--who are not in the US.
+select * from Customer limit 100;
+select firstname || " " || lastname as full_name, customerid, country
+from Customer
+where country != 'USA' ;
+
+--Provide a query only showing the Customers from Brazil.
+select firstname || " " || lastname as full_name, customerid, country
+from Customer
+where country = 'Brazil' ;
+
+--Provide a query showing the Invoices of customers who are from Brazil. 
+--The resultant table should show the customer's full name, Invoice ID, Date of the invoice and billing country.
+select cus.firstname || " " || cus.lastname as full_name, inv.invoiceid, inv.invoicedate, inv.billingcountry
+from Customer cus join Invoice inv on cus.customerid = inv.customerid
+where inv.billingcountry = 'Brazil';
+
+--Provide a query showing only the Employees who are Sales Agents.
+select * from Employee limit 100;
+select firstname || " " || lastname as full_name, title
+from Employee
+--where title like '%Agent%';
+where title = 'Sales Support Agent';
+
+--Provide a query showing a unique/distinct list of billing countries from the Invoice table.
+select distinct(billingcountry)
+from invoice order by billingcountry;
+
+--Provide a query that shows the invoices associated with each sales agent. 
+--The resultant table should include the Sales Agent's full name.
+--select * from Customer limit 100;
+--THIS MAY BE WRONG!!  I'm not sure about the join between the customer table and the employee table
+select emp.firstname || " " || emp.lastname as full_name
+from Employee emp join Customer cus on emp.employeeid = cus.supportrepid join Invoice inv on cus.customerid = inv.customerid
+where emp.title = 'Sales Support Agent';
+
+--Provide a query that shows the Invoice Total, Customer name, Country and Sale Agent name for all invoices and customers.
+--select * from Invoice limit 100;
+select "$" || inv.[total] as total_price, cus.firstname || " " || cus.lastname as customer_name, 
+	cus.country, emp.firstname || " " || emp.lastname as employee_name
+from Employee emp join Customer cus on emp.employeeid = cus.supportrepid join Invoice inv on cus.customerid = inv.customerid
