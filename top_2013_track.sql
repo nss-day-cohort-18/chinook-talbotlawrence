@@ -17,7 +17,6 @@ having count(inv.invoiceid) =
 	order by count(inv.invoiceid) desc
 	limit 1
 	)   
-order by count(inv.invoiceid) desc;
 -----------------------------------------------------------
 --number of units sold
 /*
